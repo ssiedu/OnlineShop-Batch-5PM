@@ -13,25 +13,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/CategoryServlet")
-public class CategoryServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
+@WebServlet("/ProductListServlet")
+public class ProductListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String category=request.getParameter("cat");
 		PrintWriter out=response.getWriter();
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/data5","root","root");
-			String sql="select distinct category from products order by category";
+			String sql="select code,name from products where category=?";	
 			PreparedStatement ps=con.prepareStatement(sql);
+			ps.setString(1, category);
 			ResultSet rs=ps.executeQuery();
 			out.println("<html>");
 			out.println("<body>");
-			out.println("<h3>Product-Categories</h3>");
+			out.println("<h3>Product-List</h3>");
 			out.println("<hr>");
 			while(rs.next()) {
-				String s=rs.getString(1);
-				out.println("<a href=ProductListServlet?cat="+s+">");
+				String id=rs.getString(1);
+				String s=rs.getString(2);
+				out.println("<a href=ProductDetailServlet?code="+id+">");
 				out.println(s);
 				out.println("</a>");
 				out.println("<br>");
@@ -45,6 +48,13 @@ public class CategoryServlet extends HttpServlet {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		
+		
+		
+		out.close();
 	
 	}
 

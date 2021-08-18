@@ -7,6 +7,7 @@
 			Email		<input type="text" name="email"/>
 			Password 	<input type="password" name="password"/>
 			Usertype	<select name="usertype"><option>buyer</option><option>owner</option></select>
+			RememberMe	<input type="checkbox" name="save" value="yes"/>
 					<input type="submit" value="Login"/>
 			</pre>
 		</form>

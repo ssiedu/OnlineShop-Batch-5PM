@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String category=request.getParameter("cat");
+		
+		//we will write user category choice to user's disk using cookie
+		//step-1 (create cookie object)
+		Cookie ck=new Cookie("choice",category);
+		//step-2 (set the maximum age of cookie)
+		ck.setMaxAge(60*60*24*7);
+		//step-3 (add the cookie to response object)
+		response.addCookie(ck);
+		
+		
+		
+		
 		PrintWriter out=response.getWriter();
 		
 		try {
@@ -29,6 +42,7 @@ public class ProductListServlet extends HttpServlet {
 			ResultSet rs=ps.executeQuery();
 			out.println("<html>");
 			out.println("<body>");
+			out.println("<h3>Welcome User</h3>");
 			out.println("<h3>Product-List</h3>");
 			out.println("<hr>");
 			while(rs.next()) {
@@ -40,6 +54,9 @@ public class ProductListServlet extends HttpServlet {
 				out.println("<br>");
 			}
 			out.println("<hr>");
+			out.println("<a href=CategoryServlet>Category-Page</a><br>");
+			out.println("<a href=buyer-dashboard.jsp>Buyer-Dashboard</a>");
+			
 			out.println("</body>");
 			out.println("<html>");
 			

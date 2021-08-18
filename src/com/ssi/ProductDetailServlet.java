@@ -66,7 +66,9 @@ public class ProductDetailServlet extends HttpServlet {
 			out.println("<hr>");
 			out.println("</body>");
 			out.println("<html>");
-
+			out.println("<a href=CartManager?code="+pcode+">Add-To-Cart</a><br>");
+			out.println("<a href=CategoryServlet>Category-Page</a><br>");
+			out.println("<a href=buyer-dashboard.jsp>Buyer-Dashboard</a>");
 			con.close();
 
 		} catch (Exception e) {

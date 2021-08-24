@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class VerifyUser
@@ -49,6 +50,12 @@ public class VerifyUser extends HttpServlet {
 				ResultSet rs=ps.executeQuery();
 				boolean b=rs.next();
 				if(b) {
+					
+					//here we are storing user's email into his session, so that it will be available for whole app.
+					HttpSession session=request.getSession();
+					session.setAttribute("userid", email);
+					
+					
 					response.sendRedirect("buyer-dashboard.jsp");
 				}else {
 					out.println("Invalid Buyer Details");

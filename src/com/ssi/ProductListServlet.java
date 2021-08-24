@@ -13,11 +13,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/ProductListServlet")
 public class ProductListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session=request.getSession();
+		String email=(String)session.getAttribute("userid");
+		if(email==null) {//there is no member userid in session (auth not done)
+			response.sendRedirect("index.jsp");
+		}
 		String category=request.getParameter("cat");
 		
 		//we will write user category choice to user's disk using cookie
@@ -42,7 +49,7 @@ public class ProductListServlet extends HttpServlet {
 			ResultSet rs=ps.executeQuery();
 			out.println("<html>");
 			out.println("<body>");
-			out.println("<h3>Welcome User</h3>");
+			out.println("<h3>Welcome "+email+"</h3>");
 			out.println("<h3>Product-List</h3>");
 			out.println("<hr>");
 			while(rs.next()) {

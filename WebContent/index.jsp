@@ -1,3 +1,6 @@
+<%
+	//session.setMaxInactiveInterval(6000);
+%>
 <html>
 <body>
 	<h3>Online Shopping</h3>

@@ -12,6 +12,7 @@
 	<hr>
 	<pre>
 		<a href="CategoryServlet">Explore-Store</a>
+		<a href="DisplayCart">View-Cart</a>
 		<a href="KillSession">Logout</a>
 		</pre>
 	<hr>

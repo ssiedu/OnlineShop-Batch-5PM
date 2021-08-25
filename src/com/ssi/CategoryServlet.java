@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +28,12 @@ public class CategoryServlet extends HttpServlet {
 		if(email==null) {//there is no member userid in session (auth not done)
 			response.sendRedirect("index.jsp");
 		}
-		
+		HashSet<Integer> set=(HashSet<Integer>) session.getAttribute("cart");
+		System.out.println(set);
+		int n=0;
+		if(set!=null) {
+			n=set.size();
+		}
 		String ch="";
 		String time="";
 		//here we are reading a cookie whose name is choice.
@@ -47,8 +53,7 @@ public class CategoryServlet extends HttpServlet {
 			}
 		}
 		
-		
-		
+	
 		PrintWriter out=response.getWriter();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -59,8 +64,9 @@ public class CategoryServlet extends HttpServlet {
 			out.println("<html>");
 			out.println("<body>");
 			out.println("<h3>Welcome "+email+"</h3>");
-			out.println("<h4>Your Last Visit Time : "+time+"</h4>");
-			out.println("<h4><marquee>attractive offers on "+ch+" products</marquee></h4>");
+			out.println("<h5>Total Products : "+n+"</h5>");
+			//out.println("<h4>Your Last Visit Time : "+time+"</h4>");
+			//out.println("<h4><marquee>attractive offers on "+ch+" products</marquee></h4>");
 			out.println("<h3>Product-Categories</h3>");
 			out.println("<hr>");
 			while(rs.next()) {

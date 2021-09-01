@@ -5,48 +5,58 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet("/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
 	private Connection con;
 	private PreparedStatement ps;
-	
-	//while loading
+
+	// while loading
 	public void init() {
-		String sql="INSERT INTO userinfo VALUES(?,?,?,?,?)";
+		// reading context-params
+		ServletContext context = getServletContext();
+		String driver = context.getInitParameter("drivername");
+		String url = context.getInitParameter("url");
+		String uid = context.getInitParameter("username");
+		String pwd = context.getInitParameter("password");
+		
+		String sql = "INSERT INTO userinfo VALUES(?,?,?,?,?)";
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/data5","root","root");
-			ps=con.prepareStatement(sql);
-		}catch(Exception e) {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, uid, pwd);
+			ps = con.prepareStatement(sql);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	//while unloading
+
+	// while unloading
 	public void destroy() {
 		try {
 			con.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out=response.getWriter();
-		
-		//reads the request (userid,password,gender,hobbies,city,photo)
-		String email=request.getParameter("email");
-		String password=request.getParameter("password");
-		String name=request.getParameter("name");
-		String address=request.getParameter("address");
-		String mobile=request.getParameter("mobile");
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+
+		// reads the request (userid,password,gender,hobbies,city,photo)
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		String address = request.getParameter("address");
+		String mobile = request.getParameter("mobile");
+
 		out.println("<html>");
 		out.println("<body>");
 		out.println("<hr>");
@@ -59,7 +69,7 @@ public class RegistrationServlet extends HttpServlet {
 			ps.executeUpdate();
 			out.println("<h3>Registered Successfully</h3>");
 			out.println("<h4><a href=index.jsp>Login</a></h4>");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			out.println("<h3>Registration Failed</h3>");
 			out.println("<h4><a href=registration.jsp>Re-Try</a></h4>");
@@ -69,7 +79,7 @@ public class RegistrationServlet extends HttpServlet {
 		out.println("</body>");
 		out.println("</html>");
 		out.close();
-		
+
 	}
 
 }

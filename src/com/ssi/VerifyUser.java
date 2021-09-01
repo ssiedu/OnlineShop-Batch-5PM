@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -23,6 +24,12 @@ public class VerifyUser extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//reading context-params 
+		ServletContext context=getServletContext();
+		String driver=context.getInitParameter("drivername");
+		String url=context.getInitParameter("url");
+		String uid=context.getInitParameter("username");
+		String pwd=context.getInitParameter("password");
 		
 		//writing visit time using cookies to client's disk
 		java.util.Date dt=new java.util.Date();
@@ -42,8 +49,8 @@ public class VerifyUser extends HttpServlet {
 		if(usertype.equals("buyer")) {
 			String sql="SELECT * FROM userinfo WHERE email=? AND password=?";
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/data5","root","root");
+				Class.forName(driver);
+				Connection con=DriverManager.getConnection(url,uid,pwd);
 				PreparedStatement ps=con.prepareStatement(sql);
 				ps.setString(1, email);
 				ps.setString(2, password);

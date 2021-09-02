@@ -6,6 +6,7 @@
 		response.sendRedirect("index.jsp");
 	}
 %>
+<%@include file="info.jsp" %>
 <html>
 <body>
 	<h3>Welcome <%=email%></h3>

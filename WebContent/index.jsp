@@ -1,6 +1,7 @@
 <%
 	//session.setMaxInactiveInterval(6000);
 %>
+<%@include file="info.jsp" %>
 <html>
 <body>
 	<h3>Online Shopping</h3>
